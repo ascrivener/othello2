@@ -1,3 +1,5 @@
+#!/usr/bin/ruby
+
 class Game
 
 	def initialize (n)
@@ -92,6 +94,10 @@ class Game
 		if @playerMoves[color] != []
 			move = @playerMoves[color].sample
 			update(move[0],move[1],color)
+
+			return [move[0],move[1]]
+		else
+			return nil
 		end
 	end
 
@@ -752,49 +758,66 @@ class Move
 
 end
 
-def run(color)#, depth, time1, time2)
-	if color == 'W'
-		myColor = 1
-		enemyColor = 0
-	else
-		myColor = 0
-		enemyColor = 1
-	end
+def run(color, depth, time1, time2)
 
 	game = Game.new(8)
 
-
-	while (true)
-		game.makeMove(0)
-
-		# game.printBoard
-
-		# game.info
-
-		if (game.isDone)
-			break
+	if color == "W"
+		while (true)
+			line = $stdin.gets.chomp.split
+			game.update(line[0].to_i,line[1].to_i,1)
+			move = game.makeMove(0)
+			if (move)
+				$stdout.puts "#{move[0]} #{move[1]}"
+			else
+				$stdout.puts "pass"
+			end
 		end
-
-		# game.printMoves(0)
-		# game.printMoves(1)
-
-		game.makeMove(1)
-
-		# game.printBoard
-
-		# game.info
-
-		if (game.isDone)
-			break
+	else
+		while (true)
+			move = game.makeMove(1)
+			if (move)
+				$stdout.puts "#{move[0]} #{move[1]}"
+			else
+				$stdout.puts "pass"
+			end
+			line = $stdin.gets.chomp.split
+			game.update(line[0].to_i,line[1].to_i,0)
 		end
-
-		# game.printMoves(0)
-		# game.printMoves(1)
+	end
 
 
-	end	
+	# while (true)
+	# 	game.makeMove(0)
 
-	game.getWinner
+	# 	# game.printBoard
+
+	# 	# game.info
+
+	# 	if (game.isDone)
+	# 		break
+	# 	end
+
+	# 	# game.printMoves(0)
+	# 	# game.printMoves(1)
+
+	# 	# game.makeMove(1)
+
+	# 	# game.printBoard
+
+	# 	# game.info
+
+	# 	# if (game.isDone)
+	# 	# 	break
+	# 	# end
+
+	# 	# game.printMoves(0)
+	# 	# game.printMoves(1)
+
+
+	# end	
+
+	# game.getWinner
 
 
 	#game.update(4,2,1)
@@ -819,5 +842,5 @@ def run(color)#, depth, time1, time2)
 
 end
 
-#line = gets.split
-run(gets.chomp)#[1]), line[2], line[3], line[4])
+line = $stdin.gets.chomp.split
+run(line[1], line[2].to_i, line[3].to_i, line[4].to_i)
